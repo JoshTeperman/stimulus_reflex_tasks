@@ -1,0 +1,20 @@
+<div class="row justify-content-center my-3">
+  <div class="col-6">
+    <div class="card">
+      <div class="card-header"><%= list.name %></div>
+      <div class="card-body p-0">
+        <div class="list-group-flush">
+          <% list.tasks.incomplete_first.each do |task| %>
+            <% if task.completed? %>
+              <del>
+                <div class="list-group-item"><%= task.name %></div>
+              </del>
+            <% else %>
+                <div class="list-group-item"><%= task.name %></div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
