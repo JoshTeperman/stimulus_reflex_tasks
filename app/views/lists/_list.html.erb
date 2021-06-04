@@ -6,13 +6,18 @@
         <div class="list-group-flush">
           <% list.tasks.incomplete_first.each do |task| %>
             <% if task.completed? %>
-              <del>
-                <div class="list-group-item"><%= task.name %></div>
-              </del>
+              <div class="custom-control custom-checkbox list-group-item">
+                <input type="checkbox" class="custom-control-input" checked="true" id="<%= dom_id(task) %>" data-reflex="change->task#toggle">
+                <label for="<%= dom_id(task) %>" class="custom-control-label">
+                  <del>
+                    <%= task.name %>
+                  </del>
+                </label>
+              </div>
             <% else %>
               <div class="list-group-item" data-controller="task">
                 <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input" id="<%= dom_id(task) %>" data-reflex="change->task#complete">
+                  <input type="checkbox" class="custom-control-input" id="<%= dom_id(task) %>" data-reflex="change->task#toggle">
                   <label for="<%= dom_id(task) %>" class="custom-control-label"><%= task.name %></label>
                 </div>
               </div>
