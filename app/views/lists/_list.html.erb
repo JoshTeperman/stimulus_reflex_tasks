@@ -1,29 +1,19 @@
-<div class="row justify-content-center my-3">
+<div class="row justify-content-center my-3" data-controller="list">
   <div class="col-10 col-lg-6">
     <div class="card">
       <div class="card-header"><%= list.name %></div>
       <div class="card-body p-0">
         <div class="list-group-flush">
-          <% list.tasks.incomplete_first.each do |task| %>
-            <% if task.completed? %>
-              <div class="custom-control custom-checkbox list-group-item">
-                <input type="checkbox" class="custom-control-input" checked="true" id="<%= dom_id(task) %>" data-reflex="change->task#toggle">
-                <label for="<%= dom_id(task) %>" class="custom-control-label">
-                  <del>
-                    <%= task.name %>
-                  </del>
-                </label>
-              </div>
-            <% else %>
-              <div class="list-group-item" data-controller="task">
-                <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input" id="<%= dom_id(task) %>" data-reflex="change->task#toggle">
-                  <label for="<%= dom_id(task) %>" class="custom-control-label"><%= task.name %></label>
-                </div>
-              </div>
-            <% end %>
-          <% end %>
+          <%= render list.tasks.active.incomplete_first %>
         </div>
+      </div>
+      <div class="card-footer">
+        <%= form_with(model: Task.new, url: tasks_path, data: { reflex: 'submit->List#create_task', list_target: 'form', list_id: list.id }) do |form| %>
+          <div class="form-group d-flex flex-fill">
+            <%= form.text_field :name, required: true, class: 'w-100', placeholder: 'What needs to be done?', data: { list_target: 'input' } %>
+            <%= form.submit 'Add task' %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

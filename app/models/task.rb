@@ -6,4 +6,5 @@ class Task < ApplicationRecord
   end
 
   scope :incomplete_first, -> { order(completed_at: :desc) }
+  scope :active, -> { where(deleted_at: nil) }
 end
