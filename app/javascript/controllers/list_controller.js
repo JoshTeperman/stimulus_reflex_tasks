@@ -12,8 +12,4 @@ export default class extends ApplicationController {
     this.formTarget.reset();
     this.inputTarget.focus();
   }
-
-  createTaskError(element, name, error) {
-    alert(error);
-  }
 }

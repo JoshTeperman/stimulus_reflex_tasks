@@ -1,5 +1,6 @@
 class Task < ApplicationRecord
   belongs_to :list
+  validates_presence_of :name
 
   def completed?
     completed_at.present?
