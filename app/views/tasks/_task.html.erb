@@ -1,4 +1,4 @@
-<div class="list-group-item" data-controller="task">
+<div class="list-group-item <%= 'completed' if task.completed? %>" data-controller="task" data-id="<%= task.id %>">
   <div class="custom-control custom-checkbox">
     <input  type="checkbox"
             class="custom-control-input"

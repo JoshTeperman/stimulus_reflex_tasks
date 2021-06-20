@@ -1,5 +1,5 @@
 class TaskReflex < StimulusReflex::Reflex
-  before_reflex :set_task, only: [:toggle, :delete]
+  before_reflex :set_task, only: [:toggle, :delete, :reorder]
 
   def toggle
     if @task.completed_at.present?
@@ -11,6 +11,10 @@ class TaskReflex < StimulusReflex::Reflex
 
   def delete
     @task.update(deleted_at: Time.current)
+  end
+
+  def reorder(position)
+    @task.insert_at(position)
   end
 
   private

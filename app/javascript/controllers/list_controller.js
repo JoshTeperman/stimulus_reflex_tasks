@@ -6,7 +6,11 @@ export default class extends ApplicationController {
 
   connect() {
     super.connect();
-    Sortable.create(this.tasksTarget);
+
+    Sortable.create(this.tasksTarget, {
+      onEnd: (event) => (this.reorder(event)),
+      filter: '.completed'
+    });
   }
 
   beforeCreateTask(element) {
@@ -17,5 +21,10 @@ export default class extends ApplicationController {
   createTaskSuccess() {
     this.formTarget.reset();
     this.inputTarget.focus();
+  }
+
+  reorder(event) {
+    console.log(event);
+    this.stimulate('Task#reorder', event.item, event.newIndex)
   }
 }
