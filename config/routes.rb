@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :lists, only: [:index]
   resources :tasks, only: [:create]
   root to: 'lists#index'
