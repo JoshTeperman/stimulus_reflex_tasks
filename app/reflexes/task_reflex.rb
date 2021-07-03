@@ -1,11 +1,11 @@
 class TaskReflex < StimulusReflex::Reflex
-  before_reflex :set_task, only: [:toggle, :delete, :reorder]
+  before_reflex :set_task, only: [:toggle, :delete, :reorder, :assign]
 
   def toggle
-    if @task.completed_at.present?
-      @task.update!(completed_at: nil)
+    if element.checked
+      @task.update!(completed_at: Time.current, completer: connection.current_user)
     else
-      @task.update!(completed_at: Time.current)
+      @task.update!(completed_at: nil, completer: nil)
     end
   end
 
@@ -15,6 +15,11 @@ class TaskReflex < StimulusReflex::Reflex
 
   def reorder(position)
     @task.insert_at(position)
+  end
+
+  def assign
+    @task.update!(assignee_id: element.value)
+    morph "#task-#{@task.id}-assignee", @task.assignee_name
   end
 
   private

@@ -3,6 +3,10 @@ class Task < ApplicationRecord
   belongs_to :list
   belongs_to :creator, foreign_key: 'creator_id', class_name: 'User'
   belongs_to :assignee, foreign_key: 'assignee_id', class_name: 'User', optional: true
+  belongs_to :completer, foreign_key: 'completer_id', class_name: 'User', optional: true
+
+  delegate :name, to: :assignee, prefix: true, allow_nil: true
+  delegate :name, to: :completer, prefix: true, allow_nil: true
 
   validates_presence_of :name
 

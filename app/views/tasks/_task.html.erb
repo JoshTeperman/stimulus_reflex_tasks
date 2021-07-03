@@ -7,14 +7,23 @@
             data-id=<%= task.id %>
             <%= "checked" if task.completed_at.present? %>
     >
-    <% if task.completed_at.present? %>
       <label for="<%= dom_id(task) %>" class="custom-control-label">
-        <del><%= task.name %></del>
+        <% if task.completed_at.present? %>
+          <del><%= task.name %></del>
+        <% else %>
+          <%= task.name %>
+        <% end %>
+        <% if task.completed? %>
+          <span class="text-muted ml-2">Completed by: <%= task.completer_name %></span>
+        <% end %>
       </label>
-    <% else %>
-      <label for="<%= dom_id(task) %>" class="custom-control-label"><%= task.name %></label>
-    <% end %>
+
   </div>
-  <button type="button" data-action="click->task#delete" data-id="<%= task.id %>">Remove</button>
+<button type="button" data-action="click->task#delete" data-id="<%= task.id %>">Remove</button>
+
+  <button class="text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= task.id %>">Edit Button</button>
+  <div class="collapse" id="collapse-<%= task.id %>">
+    <%= select_tag :assignee, options_from_collection_for_select(User.all, :id, :name, task.assignee_id), prompt: 'Assign task...', data: { reflex: 'change->Task#assign', id: task.id } %>
+  </div>
 </div>
 

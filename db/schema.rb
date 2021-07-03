@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_20_052904) do
+ActiveRecord::Schema.define(version: 2021_07_03_135102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,7 +31,9 @@ ActiveRecord::Schema.define(version: 2021_06_20_052904) do
     t.integer "position", null: false
     t.bigint "creator_id", null: false
     t.bigint "assignee_id"
+    t.bigint "completer_id"
     t.index ["assignee_id"], name: "index_tasks_on_assignee_id"
+    t.index ["completer_id"], name: "index_tasks_on_completer_id"
     t.index ["creator_id"], name: "index_tasks_on_creator_id"
     t.index ["list_id"], name: "index_tasks_on_list_id"
   end
@@ -52,5 +54,6 @@ ActiveRecord::Schema.define(version: 2021_06_20_052904) do
 
   add_foreign_key "tasks", "lists"
   add_foreign_key "tasks", "users", column: "assignee_id"
+  add_foreign_key "tasks", "users", column: "completer_id"
   add_foreign_key "tasks", "users", column: "creator_id"
 end
