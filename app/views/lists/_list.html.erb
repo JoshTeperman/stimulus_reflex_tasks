@@ -9,8 +9,10 @@
       </div>
       <div class="card-footer">
         <%= bootstrap_form_with(model: @new_task, url: '', layout: :inline, id: dom_id(list), data: { reflex: 'submit->List#create_task', list_target: 'form', list_id: list.id }) do |form| %>
-          <%= form.text_field :name, wrapper_class: 'flex-fill mr-2 w-100', skip_label: true, placeholder: 'What needs to be done?', data: { list_target: 'input' } %>
-          <%= form.submit 'Add task' %>
+          <div class="form-group d-flex">
+            <%= form.text_field :name, wrapper: false, skip_label: true, placeholder: 'What needs to be done?', data: { list_target: 'input' }, style: 'margin-right: 0.5rem;' %>
+            <%= form.primary 'Add task' %>
+          </div>
         <% end %>
       </div>
     </div>

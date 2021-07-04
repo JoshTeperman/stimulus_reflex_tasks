@@ -18,6 +18,7 @@ class TaskReflex < StimulusReflex::Reflex
   end
 
   def assign
+    require 'pry';binding.pry
     @task.update!(assignee_id: element.value)
     morph "#task-#{@task.id}-assignee", @task.assignee_name
   end

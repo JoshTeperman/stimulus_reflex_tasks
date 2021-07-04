@@ -1,28 +1,41 @@
 <div class="list-group-item <%= 'completed' if task.completed? %>" data-controller="task" data-id="<%= task.id %>">
-  <div class="custom-control custom-checkbox">
+  <div class="custom-control custom-checkbox d-flex align-items-baseline">
     <input  type="checkbox"
             class="custom-control-input"
+            style="margin-right: 0.5rem;"
             id="<%= dom_id(task) %>"
             data-reflex="change->task#toggle"
             data-id=<%= task.id %>
             <%= "checked" if task.completed_at.present? %>
     >
-      <label for="<%= dom_id(task) %>" class="custom-control-label">
+    <div class="d-flex w-100 justify-content-between">
+      <label for="<%= dom_id(task) %>" class="custom-control-label" style="max-width: 60%">
         <% if task.completed_at.present? %>
           <del><%= task.name %></del>
         <% else %>
           <%= task.name %>
         <% end %>
-        <% if task.completed? %>
-          <span class="text-muted ml-2">Completed by: <%= task.completer_name %></span>
-        <% end %>
       </label>
-
+      <% if task.completed? %>
+        <span class="text-muted ml-2"><%= task.completer_name %></span>
+      <% elsif task.assignee_id.present? %>
+        <span class="text-muted ml-2" id="task-<%= task.id %>-assignee"><div><%= task.assignee_name %></div></span>
+      <% end %>
+    </div>
   </div>
-<button type="button" data-action="click->task#delete" data-id="<%= task.id %>">Remove</button>
 
-  <button class="text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= task.id %>">Edit Button</button>
+  <div style='width: fit-content; margin-left: auto;'>
+    <button type="button" data-action="click->task#delete" data-id="<%= task.id %>">Remove</button>
+    <button class="text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= task.id %>">Edit Button</button>
+  </div>
+
   <div class="collapse" id="collapse-<%= task.id %>">
+    <%= bootstrap_form_with model: task, url: '', layout: :inline do |form| %>
+      <div class="form-group d-flex my-2">
+        <%= form.text_field :name, skip_label: true, class: 'flex-grow-1', wrapper: false, style: 'margin-right: 0.5rem;' %>
+        <%= form.primary "Update" %>
+      </div>
+    <% end %>
     <%= select_tag :assignee, options_from_collection_for_select(User.all, :id, :name, task.assignee_id), prompt: 'Assign task...', data: { reflex: 'change->Task#assign', id: task.id } %>
   </div>
 </div>
