@@ -1,15 +1,20 @@
-<div class="list-group-item <%= 'completed' if task.completed? %>" data-controller="task" data-id="<%= task.id %>">
-  <div class="custom-control custom-checkbox d-flex align-items-baseline">
+<div
+  class="list-group-item <%= 'completed' if task.completed? %>"
+  data-controller="task"
+  data-id="<%= task.id %>"
+  id="<%= dom_id(task) %>"
+>
+  <div class="custom-control custom-checkbox d-flex align-items-baseline" data-task-target="checkbox">
     <input  type="checkbox"
             class="custom-control-input"
             style="margin-right: 0.5rem;"
-            id="<%= dom_id(task) %>"
+            id="<%= dom_id(task) %>_checkbox"
             data-reflex="change->task#toggle"
             data-id=<%= task.id %>
             <%= "checked" if task.completed_at.present? %>
     >
     <div class="d-flex w-100 justify-content-between">
-      <label for="<%= dom_id(task) %>" class="custom-control-label" style="max-width: 60%">
+      <label for="<%= dom_id(task) %>_checkbox" class="custom-control-label" style="max-width: 60%">
         <% if task.completed_at.present? %>
           <del><%= task.name %></del>
         <% else %>
@@ -29,10 +34,10 @@
     <button class="text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= task.id %>">Edit Button</button>
   </div>
 
-  <div class="collapse" id="collapse-<%= task.id %>">
-    <%= bootstrap_form_with model: task, url: '', layout: :inline do |form| %>
+  <div class="collapse" id="collapse-<%= task.id %>" data-task-target="collapse">
+    <%= bootstrap_form_with model: task, url: '', layout: :inline, data: { reflex: 'submit->Task#update', id: task.id } do |form| %>
       <div class="form-group d-flex my-2">
-        <%= form.text_field :name, skip_label: true, class: 'flex-grow-1', wrapper: false, style: 'margin-right: 0.5rem;' %>
+        <%= form.text_field :name, skip_label: true, class: 'flex-grow-1', id: "task_name_#{task.id}", wrapper: false, style: 'margin-right: 0.5rem;' %>
         <%= form.primary "Update" %>
       </div>
     <% end %>

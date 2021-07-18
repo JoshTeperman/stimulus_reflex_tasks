@@ -1,5 +1,5 @@
 class TaskReflex < StimulusReflex::Reflex
-  before_reflex :set_task, only: [:toggle, :delete, :reorder, :assign]
+  before_reflex :set_task, only: [:toggle, :delete, :reorder, :assign, :update]
 
   def toggle
     if element.checked
@@ -18,14 +18,22 @@ class TaskReflex < StimulusReflex::Reflex
   end
 
   def assign
-    require 'pry';binding.pry
     @task.update!(assignee_id: element.value)
     morph "#task-#{@task.id}-assignee", @task.assignee_name
+  end
+
+  def update
+    @task.update(name: task_params[:name])
+    morph dom_id(@task), ApplicationController.render(@task)
   end
 
   private
 
   def set_task
     @task = Task.find(element.dataset.id)
+  end
+
+  def task_params
+    params.require(:task).permit(:name)
   end
 end

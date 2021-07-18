@@ -24,7 +24,6 @@ export default class extends ApplicationController {
   }
 
   reorder(event) {
-    console.log(event);
     this.stimulate('Task#reorder', event.item, event.newIndex)
   }
 }
