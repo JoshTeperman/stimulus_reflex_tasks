@@ -9,7 +9,7 @@ export default class extends ApplicationController {
 
     Sortable.create(this.tasksTarget, {
       onEnd: (event) => (this.reorder(event)),
-      filter: '.completed'
+      filter: '.complete, .collapse-open'
     });
   }
 

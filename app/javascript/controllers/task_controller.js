@@ -4,12 +4,14 @@ export default class extends ApplicationController {
   static targets = ['checkbox', 'collapse']
 
   connect() {
-    $(this.collapseTarget).on('show.bs.collapse', (event) => {
+    $(this.collapseTarget).on('show.bs.collapse', () => {
       this.checkboxTarget.classList.add('d-none')
+      this.element.classList.add('collapse-open')
     })
 
-    $(this.collapseTarget).on('hide.bs.collapse', (event) => {
+    $(this.collapseTarget).on('hide.bs.collapse', () => {
       this.checkboxTarget.classList.remove('d-none')
+      this.element.classList.remove('collapse-open')
     })
   }
 

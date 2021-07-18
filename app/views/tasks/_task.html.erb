@@ -1,5 +1,5 @@
 <div
-  class="list-group-item <%= 'completed' if task.completed? %>"
+  class="list-group-item <%= 'complete' if task.completed? %>"
   data-controller="task"
   data-id="<%= task.id %>"
   id="<%= dom_id(task) %>"
