@@ -1,0 +1,8 @@
+<div class="card" id="lists-create-form">
+  <div class="card-body">
+    <%= bootstrap_form_with model: list do |form| %>
+      <%= form.text_field :name, class: 'list-name-input' %>
+      <%= form.primary 'Add list', class: 'mt-2 btn btn-primary' %>
+    <% end %>
+  </div>
+</div>

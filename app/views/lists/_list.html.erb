@@ -1,16 +1,20 @@
-<div class="row justify-content-center my-3" data-controller="list">
-  <div class="col-10 col-lg-6">
+<div class="row my-3" data-controller="list">
+  <div class="col">
     <div class="card">
       <div class="card-header"><%= list.name %></div>
       <div class="card-body p-0">
-        <div class="list-group-flush" data-list-target="tasks">
-          <%= render list.tasks.active %>
-        </div>
+        <% if list.tasks.exists? %>
+          <div class="list-group-flush" data-list-target="tasks">
+            <%= render list.tasks.active %>
+          </div>
+        <% else %>
+          <p class='p-4 mb-0'>No tasks</p>
+        <% end %>
       </div>
       <div class="card-footer">
         <%= bootstrap_form_with(model: @new_task, url: '', layout: :inline, id: dom_id(list), data: { reflex: 'submit->List#create_task', list_target: 'form', list_id: list.id }) do |form| %>
           <div class="form-group d-flex">
-            <%= form.text_field :name, wrapper: false, skip_label: true, placeholder: 'What needs to be done?', data: { list_target: 'input' }, style: 'margin-right: 0.5rem;' %>
+            <%= form.text_field :name, wrapper: false, skip_label: true, placeholder: 'What needs to be done?', class: 'task-name-input', data: { list_target: 'input' }, style: 'margin-right: 0.5rem;' %>
             <%= form.primary 'Add task' %>
           </div>
         <% end %>
