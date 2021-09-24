@@ -4,6 +4,7 @@ class Task < ApplicationRecord
   belongs_to :creator, foreign_key: 'creator_id', class_name: 'User'
   belongs_to :assignee, foreign_key: 'assignee_id', class_name: 'User', optional: true
   belongs_to :completer, foreign_key: 'completer_id', class_name: 'User', optional: true
+  has_many :comments, as: :commentable
 
   delegate :name, to: :assignee, prefix: true, allow_nil: true
   delegate :name, to: :completer, prefix: true, allow_nil: true

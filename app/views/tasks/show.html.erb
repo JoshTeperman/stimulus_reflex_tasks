@@ -1,0 +1,24 @@
+<h2 class="my-3"><%= @task.name %></h2>
+<% if @task.assignee %>
+  <p class="text-muted">Assigned to: <%= @task.assignee_name %></p>
+<% end %>
+<% if @task.completed? %>
+  <p class="text-muted">Completed_by: <%= @task.completer_name %></p>
+<% end %>
+
+<%= link_to 'Back to lists', root_path %>
+
+<h4 class="mb-3">Comments</h4>
+<div id="comments">
+  <%= render @task.comments.order(created_at: :asc) %>
+</div>
+
+<div class="card">
+  <div class="card-header"></div>
+  <div class="card-body">
+    <%= bootstrap_form_with(model: @new_comment, url: list_task_comments_path(@task.list, @task)) do |form| %>
+      <%= form.text_area :body, skip_label: true %>
+      <%= form.primary %>
+    <% end %>
+  </div>
+</div>

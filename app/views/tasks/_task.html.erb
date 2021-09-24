@@ -30,6 +30,7 @@
   </div>
 
   <div style='width: fit-content; margin-left: auto;'>
+    <%= link_to 'Comments', list_task_path(task.list, task), class: 'text-secondary' %>
     <button type="button" data-action="click->task#delete" data-id="<%= task.id %>">Remove</button>
     <button class="text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= task.id %>">Edit Button</button>
   </div>
