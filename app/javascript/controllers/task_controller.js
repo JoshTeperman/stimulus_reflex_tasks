@@ -4,6 +4,7 @@ export default class extends ApplicationController {
   static targets = ['checkbox', 'collapse']
 
   connect() {
+    super.connect()
     $(this.collapseTarget).on('show.bs.collapse', () => {
       this.checkboxTarget.classList.add('d-none')
       this.element.classList.add('collapse-open')
@@ -16,6 +17,7 @@ export default class extends ApplicationController {
   }
 
   delete(event) {
+    event.preventDefault()
     const confirmation = confirm("Delete task?")
     if (confirmation) { this.stimulate('Task#delete', event.target) }
   }

@@ -6,7 +6,6 @@ export default class extends ApplicationController {
 
   connect() {
     super.connect();
-
     Sortable.create(this.tasksTarget, {
       onEnd: (event) => (this.reorder(event)),
       filter: '.complete, .collapse-open'

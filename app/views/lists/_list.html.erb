@@ -3,13 +3,13 @@
     <div class="card">
       <div class="card-header"><%= list.name %></div>
       <div class="card-body p-0">
-        <% if list.tasks.exists? %>
-          <div class="list-group-flush" data-list-target="tasks">
+        <div class="list-group-flush" data-list-target="tasks">
+          <% if list.tasks.exists? %>
             <%= render list.tasks.active %>
-          </div>
-        <% else %>
-          <p class='p-4 mb-0'>No tasks</p>
-        <% end %>
+          <% else %>
+            <p class='p-4 mb-0'>No tasks</p>
+          <% end %>
+        </div>
       </div>
       <div class="card-footer">
         <%= bootstrap_form_with(model: @new_task, url: '', layout: :inline, id: dom_id(list), data: { reflex: 'submit->List#create_task', list_target: 'form', list_id: list.id }) do |form| %>

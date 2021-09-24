@@ -23,7 +23,7 @@ class ListsController < ApplicationController
       cable_ready[ListsChannel].replace(
         selector: '#lists-create-form',
         focus_selector: "#{dom_id(@list)} .task-name-input",
-        html: render_to_string(@list)
+        html: render_to_string(@list, assigns: { new_task: Task.new })
       )
     else
       cable_ready[ListsChannel].morph(
