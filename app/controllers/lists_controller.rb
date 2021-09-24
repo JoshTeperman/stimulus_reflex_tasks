@@ -1,5 +1,6 @@
 class ListsController < ApplicationController
   include CableReady::Broadcaster
+  after_action :broadcast_to_current_user, only: %i[new create destroy]
 
   def index
     @lists = List.all
@@ -7,13 +8,12 @@ class ListsController < ApplicationController
   end
 
   def new
+    list = List.new
     cable_ready[ListsChannel].insert_adjacent_html(
       selector: '#lists',
-      focus_selector: '#lists-create-form .list-name-input',
-      html: render_to_string(partial: 'lists/create_form', locals: { list: List.new })
+      focus_selector: "#list-create-form-#{list.client_id} .list-name-input",
+      html: render_to_string(partial: 'lists/create_form', locals: { list: list })
     )
-
-    cable_ready.broadcast_to(current_user)
   end
 
   def create
@@ -21,24 +21,35 @@ class ListsController < ApplicationController
 
     if @list.save
       cable_ready[ListsChannel].replace(
-        selector: '#lists-create-form',
+        selector: "#list-create-form-#{params.dig('list', 'client_id')}",
         focus_selector: "#{dom_id(@list)} .task-name-input",
         html: render_to_string(@list, assigns: { new_task: Task.new })
       )
     else
       cable_ready[ListsChannel].morph(
-        selector: '#lists-create-form',
+        selector: "#list-create-form-#{params.dig('list', 'client_id')}",
         focus_selector: "#{dom_id(@list)} .task-name-input",
         html: render_to_string(partial: 'lists/create_form', locals: { list: @list })
       )
     end
+  end
 
-    cable_ready.broadcast_to current_user
+  def destroy
+    @list = List.find_by(id: params[:id])
+    @list.destroy!
+
+    cable_ready[ListsChannel].remove(
+      selector: dom_id(@list)
+    )
   end
 
   private
 
   def list_params
     params.require(:list).permit(:name)
+  end
+
+  def broadcast_to_current_user
+    cable_ready.broadcast_to current_user
   end
 end
