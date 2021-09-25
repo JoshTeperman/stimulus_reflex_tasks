@@ -17,6 +17,11 @@ class CommentsController < ApplicationController
         html: render_to_string(partial: 'comments/create_form', assigns: { new_comment: Comment.new, task: @task })
       )
     else
+      cable_ready[TaskChannel].outer_html(
+        selector: '#comments-create-form',
+        focus_selector: "#comments-create-form textarea[name='comment[body]']",
+        html: render_to_string(partial: 'comments/create_form', assigns: { new_comment: comment, task: @task })
+      )
     end
   end
 
