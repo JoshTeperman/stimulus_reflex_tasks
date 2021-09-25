@@ -1,0 +1,9 @@
+<div class="card" data-controller="comments" data-comments-task-id-value="<%= task.id %>" id="comments-create-form">
+  <div class="card-header"></div>
+  <div class="card-body">
+    <%= bootstrap_form_with(model: new_comment, url: list_task_comments_path(task.list, task)) do |form| %>
+      <%= form.text_area :body, skip_label: true %>
+      <%= form.primary %>
+    <% end %>
+  </div>
+</div>

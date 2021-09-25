@@ -9,7 +9,12 @@ class CommentsController < ApplicationController
     if comment.save
       cable_ready[TaskChannel].insert_adjacent_html(
         selector: '#comments',
-        html: render_to_string(partial: comment, assigns: { new_comment: Comment.new })
+        html: render_to_string(partial: comment, assigns: { new_comment: Comment.new }),
+        focus_selector: "#comments-create-form textarea[name='comment[body]']",
+      )
+      cable_ready[TaskChannel].set_value(
+        selector: "#comments-create-form textarea[name='comment[body]']",
+        value: ''
       )
     else
     end
