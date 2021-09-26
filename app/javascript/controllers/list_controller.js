@@ -1,8 +1,13 @@
 import ApplicationController from './application_controller';
 import Sortable from 'sortablejs';
+import CableReady from 'cable_ready';
+import consumer from '../channels/consumer';
 
 export default class extends ApplicationController {
   static targets = ['form', 'input', 'tasks']
+  static values = {
+    listId: String
+  }
 
   connect() {
     super.connect();
@@ -10,6 +15,12 @@ export default class extends ApplicationController {
       onEnd: (event) => (this.reorder(event)),
       filter: '.complete, .collapse-open'
     });
+
+    consumer.subscriptions.create({ channel: 'ListChannel', list_id: this.listIdValue }, {
+        received(data) {
+          if (data.cableReady) { CableReady.perform(data.operations) }
+        }
+    })
   }
 
   beforeCreateTask(element) {
