@@ -6,9 +6,14 @@
         <%= link_to 'Delete', list_path(list), method: :delete, remote: true, data: { confirm: "Are you sure you want to delete #{list.name}?" }, class: 'text-danger' %>
       </div>
       <div class="card-body p-0">
-        <div class="list-group-flush" data-list-target="tasks">
-          <% if list.tasks.exists? %>
-            <%= render list.tasks.active %>
+        <div class="list-group-flush">
+          <% if list.tasks.active.exists? %>
+            <div id="<%= dom_id(list) %>_incomplete_tasks" data-list-target="tasks">
+              <%= render list.tasks.active.incomplete.order(:position) %>
+            </div>
+            <div id="<%= dom_id(list) %>_complete_tasks">
+              <%= render list.tasks.active.complete.order(updated_at: :asc) %>
+            </div>
           <% else %>
             <p class='p-4 mb-0'>No tasks</p>
           <% end %>

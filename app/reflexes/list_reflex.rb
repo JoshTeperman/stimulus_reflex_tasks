@@ -4,7 +4,18 @@ class ListReflex < StimulusReflex::Reflex
   def create_task
     list = List.find(element.dataset.list_id)
     @new_task = list.tasks.create(**task_params.merge(creator: current_user))
-    @new_task = Task.new if @new_task.persisted?
+    if @new_task.persisted?
+      cable_ready[ListChannel]
+        .insert_adjacent_html(
+          selector: "#{dom_id(list)}_incomplete_tasks",
+          position: 'beforeend',
+          html: ApplicationController.render(@new_task)
+        )
+        .broadcast_to list
+
+      @new_task = Task.new
+    else
+    end
   end
 
   private

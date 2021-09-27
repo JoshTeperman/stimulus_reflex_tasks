@@ -15,6 +15,7 @@ class Task < ApplicationRecord
     completed_at.present?
   end
 
-  scope :incomplete_first, -> { order(completed_at: :desc) }
   scope :active, -> { where(deleted_at: nil) }
+  scope :complete, -> { where.not(completed_at: nil) }
+  scope :incomplete, -> { where(completed_at: nil) }
 end
