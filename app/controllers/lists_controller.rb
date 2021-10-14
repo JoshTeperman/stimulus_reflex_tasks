@@ -41,11 +41,11 @@ class ListsController < ApplicationController
     @list = List.find_by(id: params[:id])
     @list.destroy!
 
-    cable_ready[TeamChannel].remove(
+    cable_ready[ListChannel].remove(
       selector: dom_id(@list)
     )
 
-    cable_ready.broadcast_to current_user.team
+    cable_ready.broadcast_to @list
   end
 
   private
