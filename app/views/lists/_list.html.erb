@@ -7,16 +7,13 @@
       </div>
       <div class="card-body p-0">
         <div class="list-group-flush">
-          <% if list.tasks.active.exists? %>
-            <div id="<%= dom_id(list) %>_incomplete_tasks" data-list-target="tasks">
-              <%= render list.tasks.active.incomplete.order(:position) %>
-            </div>
-            <div id="<%= dom_id(list) %>_complete_tasks">
-              <%= render list.tasks.active.complete.order(updated_at: :asc) %>
-            </div>
-          <% else %>
-            <p class='p-4 mb-0'>No tasks</p>
-          <% end %>
+          <div id="<%= dom_id(list) %>_incomplete_tasks" data-list-target="tasks">
+            <%= render list.tasks.active.incomplete.order(:position) %>
+          </div>
+          <div id="<%= dom_id(list) %>_complete_tasks">
+            <%= render list.tasks.active.complete.order(updated_at: :asc) %>
+          </div>
+          <p id="no_tasks" class="p-4 mb-0 <%= 'd-none' if list.tasks.active.exists? %>">No tasks</p>
         </div>
       </div>
       <div class="card-footer">

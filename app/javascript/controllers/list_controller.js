@@ -11,10 +11,7 @@ export default class extends ApplicationController {
 
   connect() {
     super.connect();
-    Sortable.create(this.tasksTarget, {
-      onEnd: (event) => (this.reorder(event)),
-      filter: '.complete, .collapse-open'
-    });
+    if (this.hasTasksTarget) this.initSortable();
 
     consumer.subscriptions.create({ channel: 'ListChannel', list_id: this.listIdValue }, {
         received(data) {
@@ -35,5 +32,12 @@ export default class extends ApplicationController {
 
   reorder(event) {
     this.stimulate('Task#reorder', event.item, event.newIndex)
+  }
+
+  initSortable() {
+    Sortable.create(this.tasksTarget, {
+      onEnd: (event) => (this.reorder(event)),
+      filter: '.complete, .collapse-open'
+    });
   }
 }
